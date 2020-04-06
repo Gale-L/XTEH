@@ -1,0 +1,144 @@
+{{ extend './layout.html' }}
+
+{{ block 'header'}}
+	<title> 校淘二货</title>
+	<link rel="stylesheet" type="text/css" href="../public/css/user.css">
+
+{{ /block }}
+{{ block 'content'}}
+	
+
+	<div class="user">
+		<div class="user_center center">
+			<div class="left">
+				{{ if user&&user.portrait}}
+				<img src="{{user&&user.portrait}}" class="img-circle portrait" data-toggle="modal" data-placement="top" title="点击更换头像" data-target="#exampleModalCenter">
+				{{ else }}
+				<img src="/public/img/head.png" class="img-circle portrait" data-toggle="modal" data-placement="top" title="点击更换头像"  data-target="#exampleModalCenter">
+				{{ /if }}
+				<!-- <div class="portrait"></div> -->
+				<div class="user_name">{{user&&user.username}}</div>
+				<ul>
+				<li><a class="my_goods" href="/user_goods" target="iframe_content">我的商品</a></li>
+				<li><a class="shopping_cart" href="/user_sell" target="iframe_content">发布二货</a></li>
+				<li><a class="personal_information" href="/user_personal_information" target="iframe_content">个人信息</a></li>	
+			</ul>
+			</div>
+				
+			<div class="right">
+				<iframe name="iframe_content" id="iframe_content" src="{{ iframe }}" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes" ></iframe>
+			</div>
+		</div>
+	</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">更换头像</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	<div  class="update_portrait" >
+      			<div class="" style="background-image: url({{user&&user.portrait}})" id="file_pic">
+      				
+					<input type="file" name="file" title="点击更换头像" id="file" multiple>
+      			</div>
+				<button  class="btn btn-success" style="width: 100%;margin-top: 30px" id="upload">保存</button>
+      	</div>
+        
+      </div>
+     <!--  <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary">保存</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+{{ /block }}
+
+
+{{ block 'footer' }}
+	<script type="text/javascript">
+	  $('#file').change(function(evt){
+        // 如果浏览器不支持FileReader，则不处理
+        if (!window.FileReader) return;
+        var files = evt.target.files;     
+        var obj = $('.img')
+        for (var i = 0, f; f = files[i]; i++) {
+            if (!f.type.match('image.*')) {
+                continue;
+            }
+            var reader = new FileReader();
+      
+            reader.onload = (function(theFile) {
+                return function(e) {
+
+                    $('#file_pic').css('background-image','url('+e.target.result+')' );
+                };
+            })(f);
+            reader.readAsDataURL(f);
+        }
+    })
+
+	  //上传图片的业务逻辑函数
+        function uploadFile(){
+            //上传图片的input
+            var file = document.getElementById("file")
+            // var file = $('#file')
+            // var file = pic_files
+            //因为准备用post提交，又因为图片的内容比较大，所以我们选择使用formdata来承载数据
+            //创建formdata对象
+            var formData = new FormData();
+            //给formdata对象中放入数据(键值对的方式)
+            console.log(file.files[0])
+            // for (var i = 0; i < file.files.length; i++)
+            // {
+                formData.append('file',file.files[0]);
+            // }
+
+            //提交请求
+            $.ajax({
+                url: '/update_portrait',//请求路径
+                type: 'POST',
+                data: formData,
+                contentType: false,//为了让浏览器根据传入的formdata来判断contentType
+                processData: false,//同上
+                success: function(data){
+                    if(200 === data.code) {
+                        // $('#result').html("上传成功！");
+                        // window.alert("上传成功")
+                        // window.location.href('/')
+                        // $('#exampleModalCenter').css('dispaly','none')
+                        $('.close').click()
+                        $('.portrait').attr('src',data.data)
+                    } else {
+                        $('#result').html("上传失败！");
+                    }
+                   
+                },
+                error: function(){
+                    $("#result").html("与服务器通信发生错误");
+                }
+            });
+          
+        }
+        //给按钮添加点击事件
+        function postPage() {
+                //上传按钮
+                var uploada = document.getElementById('upload');
+                uploada.addEventListener("click",function () {
+                    uploadFile();
+                },false);
+        }
+        window.onload = function () {
+            postPage();
+        }
+
+	</script>		
+{{ /block }}

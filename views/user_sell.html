@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>发布二货</title>
+	<link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+	<style type="text/css">
+		.form{
+			padding: 20px;
+		}
+		.pic{
+			display: inline-block;
+			width: 160px;
+			height: 160px;
+			margin-right: 20px;
+			border: 1px solid #f2f2f2;
+			position: relative;
+			background-size: 100% 100%;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-image: url(public/img/add.png);
+			overflow: hidden;
+			/*display: none;*/
+
+		}
+		.delete{
+			width: 30px;
+			height: 30px;
+			background-size: 100% 100%;
+			background-image: url(/public/img/delete.png);
+			background-color: #00000000;
+			border: 0px;
+			position: absolute;
+			top: 0px;
+			right: 0px;
+			cursor: pointer;
+		}
+		.pic_input{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			opacity: 0;
+		}
+	</style>
+</head>
+<body>
+	<div style="width: 100%;font-size: 20px;color: #666;text-align: center;margin-top: 10px;padding-bottom: 10px;border-bottom: 1px solid #f2f2f2">发布二货</div>
+	<div class="form" id="form1">
+		<input type="hidden" name="id" value="{{ product&&product.id }}" id="id">
+	<!--   <div class="form-group">
+	    <label for="formGroupExampleInput">商品名称</label>
+	    <input type="text" class="form-divcontrol" id="formGroupExampleInput" name="productName" placeholder="名称" value="{{ product&&product.productName }}">
+	  </div> -->
+	   <div class="form-group">
+	    <label for="formGroupExampleInput2">商品名称</label>
+	    <input type="text" class="form-control" id="productName"  
+	    name="productName" placeholder="商品名称" value="{{ product&&product.productName }}" required minlength="1">
+	  </div>
+	  <div class="form-group">
+	    <label for="formGroupExampleInput2">价格（元）</label>
+	    <input type="number" class="form-control" id="productPrice" 
+	    name="productPrice" placeholder="价格" value="{{ product&&product.productPrice }}" required minlength="1">
+	  </div>
+	<div class="form-group">
+	    <label for="formGroupExampleInput">类型</label>
+	    <select name="cateId" class="form-control" id="cateId">
+	    	
+	    {{ each categorys }}
+	    {{ if (product&& $value.id === product.cateId )}}
+		<option value="{{$value.id}}" selected="selected">{{$value.cateName}}</option>
+		{{ else }}
+		<option value="{{$value.id}}">{{$value.cateName}}</option>
+		{{ /if }}
+	    {{ /each }}
+	    </select>
+	   <!--  <input type="text" class="form-control" id="formGroupExampleInput" name="cateId" placeholder="类型" value="{{ product&&product.cateId }}"> -->
+	  </div>	
+	  <div class="form-group">
+	    <label for="formGroupExampleInput">详情信息</label>
+	    <textarea name="productDesc" id="productDesc" style="width:100%;height:60px;" class="form-control" >{{ product&&product.productDesc }}</textarea>
+	  </div>
+	  <div class="form-group">
+	    <label for="formGroupExampleInput">上传图片</label>
+	    <!-- <input type="text" class="form-control" id="formGroupExampleInput" name="imgPath" placeholder="上传图片" value="{{ imgPath }}"> -->
+	    
+	    <div style="width: 1100px;height: 160px;overflow: hidden;">
+	    	<!-- {{ if product }}
+	    	{{ each product.imgPath }}
+				<div class="pic_chushi " style="background-image: url({{$value}});display: none"></div>
+	    	{{ /each }}
+	    	{{ /if }} -->
+			<div class="pic"><div class="delete" onclick="delete_(0)"></div></div>
+			<div class="pic"><div class="delete" onclick="delete_(1)"></div></div>
+			<div class="pic"><div class="delete" onclick="delete_(2)"></div></div>
+			<div class="pic"><div class="delete" onclick="delete_(3)"></div></div>
+			<div class="pic"><div class="delete" onclick="delete_(4)"></div></div>
+			<div class="pic" style="display: inline-block;"><input title=""  id="file" type="file" name="pics" value="{{product&&product.imgPath}}" width="100%" class="pic_input"></div>
+	    </div>
+	  </div>
+	 
+	  
+	</div>
+		<button  class="btn btn-success" style="width:100%;" id="submit">发布</button>
+	 <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script>
+         //选中图片展示效果
+        var pic_files = []
+        var index = 0;
+       	// console.log($('#file').val())
+       	
+       	// for(var i=0; i<$('.pic_chushi').length; i++) {
+       	// 	pic_files.push($('.pic_chushi').eq(i).css('background-image'))
+       	// }
+       	// 存在一bug ：竟然某商品的编辑页面时图片无法读取 
+
+        change_pic();
+        // for(var i=0;i<5;i++)
+        // $('.pic').eq(i).hide();
+
+         $('#file').change(function(evt){
+            for( var i=0;i<this.files.length;i++)
+            pic_files.push(this.files[i])
+      		console.log(pic_files)
+        	change_pic();      
+        })
+         function change_pic(){
+         	for(var i=0;i<pic_files.length;i++){
+         		$('.pic').eq(i).show();
+         		 $('.pic').eq(i).css('background-image','url('+getObjectURL(pic_files[i])+')');
+         	}
+         	for(var i=pic_files.length;i<5;i++){
+         		$('.pic').eq(i).hide();
+         	}
+         }
+
+
+         function delete_(i){
+            pic_files.splice(i,1)
+            change_pic()
+         }
+         // function delete(){
+         // 	console.log(1)
+         // }
+
+
+
+
+        //上传图片的业务逻辑函数
+        function uploadFile(){
+
+            if ( !$('#productName').val() && !$('#productPrice').val() )
+            {
+                window.alert('商品名称或价格不能为空')
+                return 
+            }
+
+            //上传图片的input
+            // var file2 = document.getElementById("file")
+            var file = pic_files
+            //因为准备用post提交，又因为图片的内容比较大，所以我们选择使用formdata来承载数据
+            //创建formdata对象
+
+            // var form=document.querySelector("#form1");
+    	//将获得的表单元素作为参数，对formData进行初始化
+    	// var formData=new FormData(form);
+    	var formData = new FormData()
+    	//通过get方法获得name为advName元素的value值
+    	// console.log(formData.get("productPrice"));//xixi
+    	//通过get方法获得name为advType元素的value值
+   	 	// console.log(formData.get("productDesc"));//1 
+            //给formdata对象中放入数据(键值对的方式)
+            // console.log(file2.files)
+
+            for (var i = 0; i < file.length; i++)
+            {
+                formData.append('file',file[i]);
+            }
+            formData.set('id',$('#id').val())
+            formData.set('productName',$('#productName').val())
+            formData.set('productPrice',$('#productPrice').val())
+            formData.set('cateId',$('#cateId').val())
+            formData.set('productDesc',$('#productDesc').val())
+            //提交请求
+            $.ajax({
+                url: '/sell',//请求路径
+                type: 'POST',
+                data: formData,
+                contentType: false,//为了让浏览器根据传入的formdata来判断contentType
+                processData: false,//同上
+                success: function(data){
+                    if(200 === data.code) {
+                    	// window.alert('上传成功')
+                        window.parent.location = '/user'
+                        
+                    } else {
+                        window.alert('上传失败')
+                    }
+                   
+                },
+                error: function(){
+                    window.alert("服务器忙");
+                }
+            });
+
+        }
+        //给按钮添加点击事件
+        function postPage() {
+                //上传按钮
+                var uploada = document.getElementById('submit');
+                uploada.addEventListener("click",function () {
+                    uploadFile();
+                },false);
+        }
+        window.onload = function () {
+            postPage();
+        }
+        
+
+        // /建立一個可存取到該file的url
+  function getObjectURL(file) 
+  {
+    var url = null ;
+    if (window.createObjectURL!=undefined) 
+    { // basic
+      url = window.createObjectURL(file) ;
+    }
+    else if (window.URL!=undefined) 
+    {
+      // mozilla(firefox)
+      url = window.URL.createObjectURL(file) ;
+    } 
+    else if (window.webkitURL!=undefined) {
+      // webkit or chrome
+      url = window.webkitURL.createObjectURL(file) ;
+    }
+    return url ;
+  }
+</script>
+</body>
+</html>

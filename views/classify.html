@@ -1,0 +1,72 @@
+
+	
+{{ extend './layout.html' }}
+
+{{ block 'header'}}
+	<title> 分类页面</title>
+	<link rel="stylesheet" type="text/css" href="../public/css/classify.css">
+{{ /block }}
+{{ block 'content'}}
+
+
+	<div class="goods_frame" style="background-color: #f2f2f2">
+		<div class="goods_frame_center center">
+		<ul>
+			{{ each goods }}
+			<a href="goods?product_id={{$value.id}}">
+				<li class="goods">
+					<div class="goods_pic_frame">
+						{{ if $value.imgPath }}
+						<img class="goods_pic" src="{{ $value.imgPath }}" width="278px" height="300px">
+						{{ else }}
+						<img class="goods_pic" src="/public/img/none.png" width="278px" height="300px">		
+						{{ /if }}
+					</div>
+					<div class="goods_name">{{ $value.productName }}</div>
+					<div class="goods_price">￥ {{ $value.productPrice }}</div>
+				</li>
+			</a>
+			{{ /each }}
+
+
+			<div style="clear:both;"></div>
+		</ul>
+
+		
+		{{ if page.total!= 0}}
+			<nav aria-label="Page navigation example">
+			  <ul class="pagination justify-content-center">
+			  	{{ if page.start == page.current }}
+			    <li class="page-item disabled" >
+			    {{ else }}
+				<li class="page-item" >	
+				{{ /if }}	
+			      <a class="page-link" href="{{ href.previous }}" aria-label="Previous">
+			        <span aria-hidden="true">&laquo;</span>
+			        <span class="sr-only">Previous</span>
+			      </a>
+			    </li>
+			    {{ each page.pages}}
+			    {{ if $value == page.current }}
+					<li class="page-item active disabled"><a class="page-link" href="{{ href.hrefs[$index] }}">{{$value}}</a></li>
+			    {{ else }}
+					<li class="page-item "><a class="page-link" href="{{ href.hrefs[$index] }}">{{$value}}</a></li>
+			    {{ /if }}
+			    {{ /each }}
+				{{ if page.end == page.current }}
+			    <li class="page-item disabled">
+			     {{ else }}
+				<li class="page-item">
+				{{ /if }}	
+			      <a class="page-link" href="{{ href.next }}" aria-label="Next">
+			        <span aria-hidden="true">&raquo;</span>
+			        <span class="sr-only">Next</span>
+			      </a>
+			    </li>
+			  </ul>
+			</nav>
+			{{ /if }}
+		</div>
+	</div>
+
+{{ /block }}

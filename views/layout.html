@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="public/css/index.css">
+	<script src="node_modules/jquery/dist/jquery.js"></script>
+	<script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
+	{{ block 'header' }}
+		
+	{{ /block }}
+</head>
+<body style="background-color: #f2f2f2">
+	<div class="topbar-nav">
+		<div class="center topbar-nav-center">
+			<ul class="left">
+				{{ if user}}
+				<li><a href="exit">退出</a></li>
+				{{ else }}
+				<li><a href="login">登录</a></li>
+				{{ /if }}
+				<li><a href="logon">注册</a></li>
+			</ul>
+			<ul class="right">
+				<li><a href="/">商城首页</a></li>
+				{{ if user&&user.portrait }}
+				<!-- <li><a href="user" class="portrait" style="background-image: url({{user.portrait}});"></a></li> -->
+				<li><a href="user" class="portrait_a" ><img class="portrait" src="{{user.portrait}}"></a></li>
+				{{ else if user}}
+				<li><a href="user" class="portrait_a" ><img class="portrait" src="/public/img/head.png"></a></li>
+				
+				{{ else}}
+				<li><a class="portrait_a"  data-toggle="modal" data-target="#exampleModalCenter" href="javascript:;" ><img class="portrait" src="/public/img/head.png"></a></li>
+				{{ /if }}
+			</ul>
+		</div>
+	</div>
+	<div class="search-bar">
+		<div class="search-bar-center center">
+			<a href="/" class="logo"></a>
+			<div class="search ">
+				 <form class="form-inline my-2 my-lg-0" action="search">
+			      <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search" style="width: 300px">
+			      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+			    </form>
+			</div>
+			{{ if user }}
+			<a class="sell btn btn-success" href="user?iframe=user_sell" >发布二货</a>
+			{{ else }}
+			<div class="btn btn-success sell"  data-toggle="modal" data-target="#exampleModalCenter" >发布二货</div>
+			{{ /if }}	
+			
+		
+		</div>
+	</div>
+	{{ if categorys}}
+	<div class="calssify-bar" style="margin-top: 20px">
+		<div class="classify-bar-center center">
+			<ul class="nav nav-tabs">
+			  <li class="nav-item">
+			  	{{  if !category_id || category_id ==0 }}
+			    <a class="nav-link active" href="/classify">全部</a>
+			    {{ else }}
+			    <a class="nav-link" href="/classify">全部</a>
+			    {{ /if }}
+			  </li>
+			  {{ each categorys}}
+			  <li class="nav-item">
+			  	{{ if $value.id == category_id}}
+			    <a class="nav-link active" href="/classify?classify_id={{$value.id}}">{{$value.cateName}}</a>
+			    {{ else }}
+			    <a class="nav-link" href="/classify?classify_id={{$value.id}}">{{$value.cateName}}</a>
+			    {{ /if }}
+			  </li>
+			  {{ /each }}
+			</ul>
+		</div>
+	</div>
+	{{ /if }}
+	
+	{{ block 'content' }}
+		<h1>加载错误</h1>
+	{{ /block }}
+
+	<div class="bottombar-nav" style="background-color: #fff">
+		<div class="center bottombar-nav-center">
+			<div>
+				<div style="display: inline-block; margin: 0px auto">
+				<ul>
+					<li><a href="">关于我们</a></li>
+					<li><a href="">常见问题</a></li>
+					<li><a href="">服务协议</a></li>
+					<li><a href="">联系我们</a></li>
+				</ul>
+				</div>
+			</div>
+			<div>本站所有信息均为用户自由发布，本站不对信息的真实性负任何责任，交易时请注意识别信息的真假如有网站内容侵害了您的权益请联系我们删除，举报QQ：000000000
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
+		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLongTitle">不可操作</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        请先登录
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+		        <a  class="btn btn-primary " href="/login">去登录</a>
+		        
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+
+	{{ block 'footer' }}
+		
+	{{ /block }}
+</body>
+</html>

@@ -1,0 +1,80 @@
+.user_center{
+	width: 1200px;
+	height: 700px;
+	position: relative;
+	background-color: #fff;
+}
+.user_center .left{
+	width: 200px;
+	height: 100%;
+	/*margin: 20px;*/
+	border: 1px solid #f2f2f2;
+	position: absolute;
+	left: 0px;
+}
+.user_center .right{
+	width: 1000px;
+	height: 700px;
+	/*margin: 20px;*/
+	border: 1px solid #f2f2f2;
+	position: absolute;
+	right: 0px;
+	overflow: hidden;
+}
+.user_center .portrait{
+	width: 100px;
+	height: 100px;
+	margin: 50px;
+	margin-bottom: 10px;
+	border-radius:50%;
+	/*background-size: 100% 100%;*/
+	/*background-image: url(../img/head.jpg)*/
+}
+.user_center .portrait{
+	cursor: pointer;
+}
+.user_center .user_name{
+	text-align: center;
+	color: #666;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #f2f2f2;
+}
+.user_center .left ul{
+	margin-bottom: 0px;
+}
+.user_center .left li{
+	width: 100%;
+	height: 40px;
+	border-bottom: 1px solid #f2f2f2;
+	text-align: center;
+	margin-top: 30px;
+}
+.user_center .left li a{
+	color: #666;
+	font-size: 20px;
+	/*text-align: center;*/
+	/*padding: 20px;*/
+}
+#iframe_content{
+	width: 1000px;
+	height: 700px;
+	border: 0px solid #fff;
+}
+.update_portrait{
+	width: 100%;
+
+}
+
+.update_portrait div{
+	width: 450px;
+	height: 450px;
+	background-size: 100% 100%;
+}
+
+.update_portrait input{
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	cursor: pointer;
+
+}

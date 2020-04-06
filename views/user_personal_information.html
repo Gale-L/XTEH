@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>个人信息</title>
+	<link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+	<style type="text/css">
+		form{
+			padding: 20px;
+		}
+	</style>
+</head>
+<body>
+	<div style="width: 100%;font-size: 20px;color: #666;text-align: center;margin-top: 10px;padding-bottom: 20px;border-bottom: 1px solid #f2f2f2">个人信息</div>
+	<form action="edit_user" method="post">
+		<input type="hidden" name="id" value="{{ user.id }}">
+	  <div class="form-group">
+	    <label for="formGroupExampleInput">用户名</label>
+	    <input type="text" class="form-control" id="formGroupExampleInput" name="username" placeholder="用户名" value="{{ user.username}}" required minlength="1">
+	  </div>
+	  <div class="form-group">
+	    <label for="formGroupExampleInput2">密码</label>
+	    <input type="password" class="form-control" id="formGroupExampleInput2" 
+	    name="password" placeholder="密码" value="{{ user.password }}" required minlength="6">
+	  </div>
+	   <div class="form-group">
+	    <label for="formGroupExampleInput2" style="display: block">性别</label>
+	    <div class="form-check form-check-inline">
+	    {{ if user.sex == 1}}
+		  <input class="form-check-input" type="radio" name="sex" id="inlineRadio1" value="1" checked="checked">
+		 {{ else }}
+		  <input class="form-check-input" type="radio" name="sex" id="inlineRadio1" value="1" checked="checked">
+		 {{ /if }} 
+		  <label class="form-check-label" for="inlineRadio1">男</label>
+		</div>
+		<div class="form-check form-check-inline">
+		{{ if user.sex == 2}}	
+		  <input class="form-check-input" type="radio" name="sex" id="inlineRadio2" checked="checked" value="2">
+		 {{ else }}
+		 <input class="form-check-input" type="radio" name="sex" id="inlineRadio2" value="2">
+		 {{ /if }} 
+		  <label class="form-check-label" for="inlineRadio2">女</label>
+		</div>
+	  </div>
+	  <div class="form-group">
+	    <label for="formGroupExampleInput">生日</label>
+	    <input type="date" class="form-control" id="formGroupExampleInput" name="birthday" placeholder="生日" value="{{ user.birthday }}">
+	  </div>
+	  <div class="form-group">
+	    <label for="formGroupExampleInput">联系方式</label>
+	    <input type="text" class="form-control" id="formGroupExampleInput" name="phoneNum" placeholder="联系方式" value="{{ user.phoneNum }}">
+	  </div>
+	  <div class="form-group">
+	    <label for="formGroupExampleInput">身份证号</label>
+	    <input type="text" class="form-control" id="formGroupExampleInput" name="identityNum" placeholder="身份证号" value="{{ user.identityNum }} " >
+	  </div>
+	 
+	  <button type="submit" class="btn btn-success" style="width:100%;margin-top: 30px">保存</button>
+	</form>
+</body>
+</html>

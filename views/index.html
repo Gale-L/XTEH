@@ -1,0 +1,79 @@
+{{ extend './layout.html' }}
+
+{{ block 'header'}}
+	<title> 校淘二货</title>
+{{ /block }}
+{{ block 'content'}}
+
+
+	<div class="rotation-chart" style="margin-top: 20px">
+		<div class="rotation-chart-center center">
+
+			<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+					  <ol class="carousel-indicators">
+					    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+					    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+					    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+					  </ol>
+					  <div class="carousel-inner">
+					    <div class="carousel-item active"  style="width: 1200px;height: 500px">
+					      <img class="d-block w-100" src="../public/img/ad3.jpg" alt="First slide">
+					    </div>
+					    <div class="carousel-item" style="width: 1200px;height: 500px">
+					      <img class="d-block w-100" src="../public/img/ad1.jpg" alt="Second slide">
+					    </div>
+					    <div class="carousel-item" style="width: 1200px;height: 500px">
+					      <img class="d-block w-100" src="../public/img/ad2.jpg" alt="Third slide">
+					    </div>
+					  </div>
+					  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+					    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					    <span class="sr-only">Previous</span>
+					  </a>
+					  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+					    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+					    <span class="sr-only">Next</span>
+					  </a>
+					</div>
+		</div>
+	</div>
+	<div class="shopping">
+
+		<div class="goods-center center">
+			{{ each goods }}
+			<div class="new_goods goods_bar">
+				{{ if $index == 0 }}
+				<div class="title">新品上市</div>
+				<a class="more" href="classify"></a>
+				{{ else }}
+				<div class="title">{{ categorys[$index - 1].cateName }}</div>
+				<a class="more" href="classify?classify_id={{categorys[$index - 1].id}}"></a>
+				{{ /if }}
+
+				<ul>
+					{{ each $value }}
+					<a href="goods?product_id={{$value.id}}">
+					<li class="goods">
+						<div class="goods_pic_frame">
+							{{ if $value.imgPath }}
+							<img class="goods_pic" src="{{$value.imgPath }}"  width="278px" height="300px">
+							{{ else }}
+							<img class="goods_pic" src=" /public/img/none.png" width="278px" height="300px">
+							{{ /if }}
+						</div>
+						<div class="goods_name">{{ $value.productName }}</div>
+						<div class="goods_price">￥ {{ $value.productPrice }}</div>
+					</li>
+					</a>
+					{{ /each }}
+				</ul>				
+			</div>
+			{{ /each }}
+		</div>
+	</div>
+
+{{ /block }}
+
+{{ block 'footer' }}
+		
+{{ /block }}

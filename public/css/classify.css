@@ -1,0 +1,15 @@
+.goods_frame_center{
+	background-color: #fff;
+}
+.goods_frame ul{
+	min-height: 400px;
+	height: auto;
+}
+.goods_frame li{
+	display: inline-block;
+}
+.goods_frame .pagination {
+	min-height: 0px;
+	height: 80px;
+	margin-top: 50px;
+}
